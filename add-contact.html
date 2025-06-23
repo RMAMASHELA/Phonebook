@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Add Contact</title>
+</head>
+<body>
+ <h2>Add New Contact</h2>
+<br/>
+    <form id="editForm">
+        <label for="firstname">First name</label>
+        <input type="text" name="firstname" id="firstname" required><br/>
+        <label for="lastname">Last name</label>
+        <input type="text" name="lastname" id="lastname" required><br/>
+        <label for="mobile">Mobile</label>
+        <input type="text" name="mobile" id="mobile" required><br/>
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email" required><br/>
+        <label for="avatar">Select a file</label><br/>
+        <input type="file" name="avatar" id="avatar"><br/>
+        <button type="submit">Submit</button>
+    </form>
+
+    <br/>
+    <button id="homeLink" type="button">Home</button>
+
+    <script src="config.js"></script>
+    <script>
+        document.getElementById("editForm").addEventListener('submit', submitForm);
+        document.getElementById("homeLink").addEventListener('click', homeLink);
+
+        function submitForm(e){
+            e.preventDefault();
+
+            const form = new FormData(document.querySelector('#editForm'));
+            form.append('apiKey', apiKey);
+
+            fetch(rootPath + 'controller/insert-contact/', {
+                method: 'POST',
+                body: form
+            })
+            .then(response => response.text())
+            .then(data => {
+                if(data == "1"){
+                 alert("Contact added.");
+                }else{
+                    alert("Failed to add contact" +data);
+
+                }
+                   homeLink();
+            })
+            .catch(error =>{
+                alert("An error occured. please try again.");
+            });
+        }
+
+        function homeLink(){
+            window.open("index.html", "_self");
+        }
+
+    </script>
+ </body>
+</html>
